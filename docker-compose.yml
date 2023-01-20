@@ -1,0 +1,35 @@
+services:
+    server:
+        build:
+            context: ./server/
+            dockerfile: Dockerfile
+        ports:
+            - "3080:3080"
+        volumes:
+            - ./server/:/usr/src/app
+            - /usr/src/app/node_modules
+        networks:
+            - app-network
+    client:
+        build:
+            context: ./client/
+            dockerfile: Dockerfile
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./client/:/usr/app
+            - /usr/app/node_modules
+        depends_on:
+            - server
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
+
+volumes:
+    data-volume:
+    node_modules:
+    web-root:
+        driver: local
